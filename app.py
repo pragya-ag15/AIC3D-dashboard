@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# Styling (FIXED + OPTION B APPLIED)
+# CSS (FULLY FIXED)
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -19,6 +19,7 @@ st.markdown("""
     max-width: 1200px;
 }
 
+/* GLOBAL TEXT FIX */
 html, body, [class*="css"] {
     font-family: "Inter", "Segoe UI", sans-serif;
     color: #0f172a;
@@ -53,14 +54,14 @@ html, body, [class*="css"] {
     margin-bottom: 0.8rem;
 }
 
-/* OPTION B CARD (FIXED) */
+/* OPTION B CARD */
 .soft-card {
     background: #f1f5f9;
     border: 1px solid #e2e8f0;
     padding: 1.1rem;
     border-radius: 18px;
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-    color: #0f172a;   /* FIX */
+    color: #0f172a;
 }
 
 /* METRIC BOX */
@@ -71,11 +72,24 @@ html, body, [class*="css"] {
     border-radius: 16px;
     box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
 }
+
+/* METRIC TEXT FIX */
+[data-testid="stMetricLabel"] {
+    color: #475569 !important;
+}
+
+[data-testid="stMetricValue"] {
+    color: #0f172a !important;
+}
+
+[data-testid="stMetric"] * {
+    color: #0f172a !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# Helper
+# Helpers
 # --------------------------------------------------
 def load_csv():
     for name in ["AIC3D_v2_results.csv", "aic3d_v2_results.csv"]:
@@ -108,13 +122,31 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# METRICS
+# METRICS (NOW VISIBLE)
 # --------------------------------------------------
 col1, col2, col3, col4 = st.columns(4)
-col1.metric("Model Type", "Random Forest")
-col2.metric("Validation Method", "LODO")
-col3.metric("Feature Vector Size", "2055")
-col4.metric("Use Case", "Pre-screening")
+
+with col1:
+    st.metric("Model Type", "Random Forest")
+with col2:
+    st.metric("Validation Method", "LODO")
+with col3:
+    st.metric("Feature Vector Size", "2055")
+with col4:
+    st.metric("Use Case", "Pre-screening")
+
+st.markdown("")
+
+col5, col6, col7 = st.columns(3)
+
+with col5:
+    st.metric("CV MSE", "0.0277")
+with col6:
+    st.metric("Train MSE", "0.0130")
+with col7:
+    st.metric("Test MSE", "0.1062")
+
+st.divider()
 
 # --------------------------------------------------
 # SUMMARY
@@ -125,8 +157,8 @@ with left:
     st.markdown('<div class="section-title">Executive Summary</div>', unsafe_allow_html=True)
     st.markdown("""
     <div class="soft-card">
-    The model performs well under internal validation but fails under Leave-One-Drug-Out testing.
-    This indicates that it captures dataset-specific patterns rather than fully generalizable chemical behavior.
+    The model performs strongly on internal validation but fails under Leave-One-Drug-Out evaluation.
+    This shows that it captures dataset-specific patterns rather than fully generalizable chemical behavior.
     </div>
     """, unsafe_allow_html=True)
 
@@ -156,8 +188,8 @@ with tab1:
         st.markdown('<div class="section-title">Problem</div>', unsafe_allow_html=True)
         st.markdown("""
         <div class="soft-card">
-        Pharmaceutical compounds persist in the environment depending on molecular structure and pH.
-        Traditional testing is slow and reactive. AIC3D explores predictive screening.
+        Drug degradation in the environment depends on structure and pH.
+        Current testing is slow and reactive. AIC3D explores predictive screening.
         </div>
         """, unsafe_allow_html=True)
 
@@ -166,8 +198,8 @@ with tab1:
         st.markdown("""
         <div class="soft-card">
         • Predict degradation from structure + pH<br>
-        • Test generalization to unseen drugs<br>
-        • Identify model limitations
+        • Test generalization<br>
+        • Identify limitations
         </div>
         """, unsafe_allow_html=True)
 
@@ -179,11 +211,11 @@ with tab2:
 
     st.markdown("""
     <div class="soft-card">
-    Features: Morgan fingerprints + chemical descriptors + pH<br><br>
+    Features: Morgan fingerprints + descriptors + pH<br><br>
     Model: Random Forest<br><br>
     Validation:
-    • 80/20 split + 5-fold CV<br>
-    • LODO (Leave-One-Drug-Out)
+    • 80/20 split + CV<br>
+    • LODO validation
     </div>
     """, unsafe_allow_html=True)
 
@@ -193,18 +225,8 @@ with tab2:
 # RESULTS
 # --------------------------------------------------
 with tab3:
-    r1, r2, r3 = st.columns(3)
-    r1.metric("CV MSE", "0.0277")
-    r2.metric("Train MSE", "0.0130")
-    r3.metric("Test MSE", "0.1062")
-
-    st.markdown("""
-    <div class="soft-card">
-    Strong internal performance, but LODO reveals weak generalization.
-    </div>
-    """, unsafe_allow_html=True)
-
     st.markdown("### Feature Importance")
+
     importance_df = pd.DataFrame({
         "Feature": ["TPSA", "pH", "MolWt", "Other"],
         "Importance": [0.1104, 0.0653, 0.0042, 0.8201]
@@ -226,7 +248,7 @@ with tab3:
 with tab4:
     show_img("feature_importance.png", "Feature Importance")
     show_img("lodo_results_plot.png", "LODO Performance")
-    show_img("summary_metrics.png", "Summary Metrics")
+    show_img("summary_metrics.png", "Summary")
 
 # --------------------------------------------------
 # NEXT STEPS
@@ -237,8 +259,8 @@ with tab5:
     st.markdown("""
     <div class="soft-card">
     • Expand dataset<br>
-    • Get expert validation<br>
+    • Validate with experts<br>
     • Improve generalization<br>
-    • Publish research/write-up
+    • Publish work
     </div>
     """, unsafe_allow_html=True)
