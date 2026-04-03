@@ -9,7 +9,7 @@ st.set_page_config(
 )
 
 # --------------------------------------------------
-# CSS (FULLY FIXED)
+# CSS (FINAL POLISH + METRIC SIZE FIX)
 # --------------------------------------------------
 st.markdown("""
 <style>
@@ -19,7 +19,7 @@ st.markdown("""
     max-width: 1200px;
 }
 
-/* GLOBAL TEXT FIX */
+/* GLOBAL TEXT */
 html, body, [class*="css"] {
     font-family: "Inter", "Segoe UI", sans-serif;
     color: #0f172a;
@@ -38,50 +38,51 @@ html, body, [class*="css"] {
 .hero-title {
     font-size: 2.4rem;
     font-weight: 800;
-    margin-bottom: 0.5rem;
 }
 
 .hero-subtitle {
     font-size: 1.05rem;
     opacity: 0.92;
-    margin-bottom: 1rem;
 }
 
-/* SECTION TITLES */
+/* SECTION */
 .section-title {
     font-size: 1.35rem;
     font-weight: 700;
     margin-bottom: 0.8rem;
 }
 
-/* OPTION B CARD */
+/* CARDS */
 .soft-card {
     background: #f1f5f9;
     border: 1px solid #e2e8f0;
     padding: 1.1rem;
     border-radius: 18px;
     box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
-    color: #0f172a;
 }
 
-/* METRIC BOX */
+/* METRICS */
 [data-testid="stMetric"] {
     background: white;
     border: 1px solid #e5e7eb;
     padding: 0.8rem;
     border-radius: 16px;
-    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.05);
 }
 
-/* METRIC TEXT FIX */
+/* FIX LABEL */
 [data-testid="stMetricLabel"] {
+    font-size: 0.85rem !important;
     color: #475569 !important;
 }
 
+/* FIX VALUE (IMPORTANT) */
 [data-testid="stMetricValue"] {
+    font-size: 1.4rem !important;   /* smaller so it fits */
+    font-weight: 600 !important;
     color: #0f172a !important;
 }
 
+/* fallback */
 [data-testid="stMetric"] * {
     color: #0f172a !important;
 }
@@ -113,59 +114,41 @@ st.markdown("""
         AI-Catalyzed Drug Decay Detector<br>
         Environmental degradation prediction for pharmaceutical compounds
     </div>
-    <div>
-        AIC3D is a machine learning system designed to predict drug degradation behavior before environmental release.
-        It uses molecular descriptors and pH conditions to evaluate whether degradation risks can be identified earlier
-        than traditional laboratory-based testing.
-    </div>
+    <br>
+    AIC3D predicts degradation behavior using molecular descriptors and environmental pH.
+    The system evaluates whether computational screening can provide earlier insight than traditional testing.
 </div>
 """, unsafe_allow_html=True)
 
 # --------------------------------------------------
-# METRICS (NOW VISIBLE)
+# METRICS
 # --------------------------------------------------
 col1, col2, col3, col4 = st.columns(4)
 
-with col1:
-    st.metric("Model Type", "Random Forest")
-with col2:
-    st.metric("Validation Method", "LODO")
-with col3:
-    st.metric("Feature Vector Size", "2055")
-with col4:
-    st.metric("Use Case", "Pre-screening")
-
-st.markdown("")
+col1.metric("Model Type", "Random Forest")
+col2.metric("Validation Method", "LODO")
+col3.metric("Feature Vector Size", "2055")
+col4.metric("Use Case", "Pre-screening")
 
 col5, col6, col7 = st.columns(3)
 
-with col5:
-    st.metric("CV MSE", "0.0277")
-with col6:
-    st.metric("Train MSE", "0.0130")
-with col7:
-    st.metric("Test MSE", "0.1062")
+col5.metric("CV MSE", "0.0277")
+col6.metric("Train MSE", "0.0130")
+col7.metric("Test MSE", "0.1062")
 
 st.divider()
 
 # --------------------------------------------------
 # SUMMARY
 # --------------------------------------------------
-left, right = st.columns([1.2, 0.8])
-
-with left:
-    st.markdown('<div class="section-title">Executive Summary</div>', unsafe_allow_html=True)
-    st.markdown("""
-    <div class="soft-card">
-    The model performs strongly on internal validation but fails under Leave-One-Drug-Out evaluation.
-    This shows that it captures dataset-specific patterns rather than fully generalizable chemical behavior.
-    </div>
-    """, unsafe_allow_html=True)
-
-with right:
-    show_img("problem_context.png", "Project Context")
-
-st.divider()
+st.markdown('<div class="section-title">Key Finding</div>', unsafe_allow_html=True)
+st.markdown("""
+<div class="soft-card">
+The model achieves strong internal performance but fails under Leave-One-Drug-Out validation.
+This indicates limited generalization across unseen drugs, highlighting the importance of evaluation design
+in scientific machine learning workflows.
+</div>
+""", unsafe_allow_html=True)
 
 # --------------------------------------------------
 # TABS
@@ -175,47 +158,41 @@ tab1, tab2, tab3, tab4, tab5 = st.tabs([
     "Method",
     "Results",
     "Figures",
-    "Next Steps"
+    "Conclusion"
 ])
 
 # --------------------------------------------------
 # OVERVIEW
 # --------------------------------------------------
 with tab1:
-    c1, c2 = st.columns(2)
+    st.markdown('<div class="section-title">Problem Context</div>', unsafe_allow_html=True)
+    st.markdown("""
+    <div class="soft-card">
+    Pharmaceutical compounds enter the environment through wastewater and disposal.
+    Their persistence depends on molecular structure and pH conditions.
 
-    with c1:
-        st.markdown('<div class="section-title">Problem</div>', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="soft-card">
-        Drug degradation in the environment depends on structure and pH.
-        Current testing is slow and reactive. AIC3D explores predictive screening.
-        </div>
-        """, unsafe_allow_html=True)
-
-    with c2:
-        st.markdown('<div class="section-title">Focus</div>', unsafe_allow_html=True)
-        st.markdown("""
-        <div class="soft-card">
-        • Predict degradation from structure + pH<br>
-        • Test generalization<br>
-        • Identify limitations
-        </div>
-        """, unsafe_allow_html=True)
+    AIC3D explores whether machine learning can estimate degradation trends earlier than traditional testing methods.
+    </div>
+    """, unsafe_allow_html=True)
 
 # --------------------------------------------------
 # METHOD
 # --------------------------------------------------
 with tab2:
     st.markdown('<div class="section-title">Methodology</div>', unsafe_allow_html=True)
-
     st.markdown("""
     <div class="soft-card">
-    Features: Morgan fingerprints + descriptors + pH<br><br>
+    Features:
+    • Morgan fingerprints (2048-bit)<br>
+    • TPSA, logP, molecular weight<br>
+    • Hydrogen bonding features<br>
+    • pH<br><br>
+
     Model: Random Forest<br><br>
+
     Validation:
-    • 80/20 split + CV<br>
-    • LODO validation
+    • Cross-validation (internal)<br>
+    • Leave-One-Drug-Out (external generalization)
     </div>
     """, unsafe_allow_html=True)
 
@@ -251,16 +228,19 @@ with tab4:
     show_img("summary_metrics.png", "Summary")
 
 # --------------------------------------------------
-# NEXT STEPS
+# CONCLUSION (FIXED)
 # --------------------------------------------------
 with tab5:
-    st.markdown('<div class="section-title">Next Steps</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-title">Conclusion</div>', unsafe_allow_html=True)
 
     st.markdown("""
     <div class="soft-card">
-    • Expand dataset<br>
-    • Validate with experts<br>
-    • Improve generalization<br>
-    • Publish work
+    AIC3D demonstrates that molecular descriptors and environmental variables can capture degradation-related patterns.
+    However, evaluation through Leave-One-Drug-Out reveals that these patterns do not generalize reliably across unseen compounds.
+
+    The project highlights a key insight: strong internal metrics are not sufficient to validate predictive systems in chemistry.
+    Robust generalization requires more diverse data and more rigorous validation strategies.
+
+    This positions AIC3D as a complete and transparent research prototype rather than an overfitted predictive tool.
     </div>
     """, unsafe_allow_html=True)
