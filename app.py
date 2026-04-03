@@ -5,185 +5,112 @@ import streamlit as st
 st.set_page_config(
     page_title="AIC3D Dashboard",
     layout="wide",
-    initial_sidebar_state="expanded" # Changed to expanded for better navigation
+    initial_sidebar_state="expanded"
 )
 
 # -----------------------------
-# Enhanced Responsive Styling
+# Pro Aesthetic Styling
 # -----------------------------
 st.markdown("""
 <style>
-    /* Main container styling */
-    .block-container {
-        max-width: 1200px;
-        padding-top: 2rem;
+    /* Resetting the forced dark colors for better visibility */
+    :root {
+        --text-color: inherit;
     }
-
-    /* Fixed Text Colors - Using a softer Slate color for better readability */
-    .stMarkdown, p, span, label {
-        color: #1e293b !important;
-    }
-
-    /* Hero section - Modern gradient */
+    
+    /* Hero section - Glassmorphism style */
     .hero {
-        background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
-        color: #f8fafc !important;
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        color: white !important;
         padding: 2.5rem;
-        border-radius: 20px;
+        border-radius: 15px;
         margin-bottom: 2rem;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     }
-    .hero h1, .hero-title {
-        color: #ffffff !important;
-        font-size: 3rem;
-        font-weight: 800;
-        margin: 0;
-    }
-    .hero-subtitle {
-        color: #cbd5e1 !important;
-        font-size: 1.2rem;
-        margin-top: 0.5rem;
-    }
+    .hero h1 { color: white !important; margin-bottom: 0; }
+    .hero p { color: #d1d5db !important; }
 
-    /* Section Labels */
-    .section-label {
-        font-size: 1.1rem;
-        font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        color: #475569 !important;
-        margin-bottom: 10px;
+    /* Fix for the "Ugly" Sidebar Text visibility */
+    [data-testid="stSidebar"] {
+        background-color: #f8fafc;
     }
-
-    /* Metric Card Styling */
+    
+    /* Metric Card Polish */
     [data-testid="stMetric"] {
-        background-color: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 12px;
-        padding: 15px !important;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    [data-testid="stMetricValue"] {
-        color: #1d4ed8 !important;
-        font-weight: 700 !important;
-    }
-
-    /* Link and Button Styling */
-    a {
-        color: #2563eb !important;
-        text-decoration: none;
-    }
-    a:hover {
-        text-decoration: underline;
+        border-radius: 10px;
+        padding: 10px 15px !important;
     }
 </style>
 """, unsafe_allow_html=True)
 
 # -----------------------------
-# Recommended Sidebar Additions
+# Sidebar: Professional Links
 # -----------------------------
 with st.sidebar:
-    st.image("https://img.icons8.com/fluency/96/test-tube.png", width=80)
-    st.title("Navigation & Links")
-    st.markdown("---")
-    st.markdown("### Resources")
-    st.markdown("[📄 Documentation](https://your-docs-link.com)")
-    st.markdown("[💻 GitHub Repository](https://github.com/your-username/AIC3D)")
-    st.markdown("[📧 Contact Support](mailto:support@aic3d.com)")
-    
-    st.markdown("---")
-    st.info("**Tip:** Use the LODO (Leave-One-Drug-Out) results to verify chemical generalization.")
+    st.title("Project Links")
+    st.markdown(f"""
+    - **GitHub:** [AIC3D Repository](https://github.com/pragya-ag15/AIC3D-dashboard)
+    - **LinkedIn:** [Pragya Agarwal](https://www.linkedin.com/in/pragyaag15/)
+    - **Email:** [Contact](mailto:pragyaagarwal004@gmail.com)
+    """)
+    st.divider()
+    st.caption("AIC3D: Artificial Intelligence Chemical Degradation, Design & Discovery")
 
 # -----------------------------
-# Helpers
-# -----------------------------
-def load_csv():
-    for fname in ["AIC3D_v2_results.csv", "aic3d_v2_results.csv"]:
-        if os.path.exists(fname):
-            return pd.read_csv(fname)
-    return None
-
-df = load_csv()
-
-# -----------------------------
-# Hero
+# Main UI
 # -----------------------------
 st.markdown("""
 <div class="hero">
-    <div class="hero-title">AIC3D</div>
-    <div class="hero-subtitle">AI-Catalyzed Drug Decay Detector</div>
-    <p style="margin-top: 1.5rem; opacity: 0.9;">
-        A machine learning system designed to estimate pharmaceutical degradation 
-        using molecular descriptors and pH-dependent conditions.
-    </p>
+    <h1>AIC3D</h1>
+    <p>AI-Catalyzed Drug Decay Detector: Predicting pharmaceutical environmental impact.</p>
 </div>
 """, unsafe_allow_html=True)
 
-# -----------------------------
-# Metrics Grid
-# -----------------------------
+# Metrics
 m1, m2, m3, m4 = st.columns(4)
-with m1: st.metric("Model", "Random Forest")
-with m2: st.metric("Validation", "LODO")
-with m3: st.metric("Features", "2055")
-with m4: st.metric("Mode", "Pre-screening")
-
-st.write("")
-
-# -----------------------------
-# Key finding + hero visual
-# -----------------------------
-left, right = st.columns([1.15, 0.85])
-
-with left:
-    st.markdown('<div class="section-label">Key Finding</div>', unsafe_allow_html=True)
-    st.warning("""
-        **Generalization Gap Identified:** While internal metrics are high (MSE 0.0130), 
-        the model struggles with unseen drugs (LODO MSE 0.1062). 
-        This highlights the necessity of structure-based validation.
-    """)
-
-with right:
-    if os.path.exists("problem_context.png"):
-        st.image("problem_context.png", caption="Project context", use_container_width=True)
-    else:
-        st.info("💡 Project visualization placeholder.")
+m1.metric("Model", "Random Forest")
+m2.metric("Validation", "LODO")
+m3.metric("Features", "2055")
+m4.metric("MSE (LODO)", "0.1062")
 
 st.divider()
 
 # -----------------------------
-# Tabbed Content
+# Pro Features: Molecular Insights
 # -----------------------------
-tab1, tab2, tab3 = st.tabs(["Methodology", "Performance Data", "Final Insights"])
+tab1, tab2 = st.tabs(["📊 Results & LODO", "🧪 Molecular Analysis"])
 
 with tab1:
-    col_a, col_b = st.columns(2)
-    with col_a:
-        st.markdown("**Feature Engineering**")
-        st.markdown("""
-        - 2048-bit Morgan Fingerprints
-        - Physicochemical properties (TPSA, logP, MolWt)
-        - Environmental pH levels
-        """)
-    with col_b:
-        st.markdown("**Experimental Design**")
-        st.markdown("""
-        - **Internal:** 5-fold Cross-Validation
-        - **External:** Leave-One-Drug-Out (LODO)
-        """)
+    col1, col2 = st.columns([1, 1])
+    with col1:
+        st.subheader("Key Finding")
+        st.info("**Generalization Gap:** The high variance in LODO results suggests the model is sensitive to specific molecular scaffolds.")
+        
+    # Example Download Feature (Pro)
+    def load_csv():
+        for fname in ["AIC3D_v2_results.csv", "aic3d_v2_results.csv"]:
+            if os.path.exists(fname): return pd.read_csv(fname)
+        return None
+
+    df = load_csv()
+    if df is not None:
+        st.dataframe(df, use_container_width=True)
+        # Pro Feature: Export functionality
+        csv_data = df.to_csv(index=False).encode('utf-8')
+        st.download_button("📥 Export Results as CSV", data=csv_data, file_name="AIC3D_Results.csv")
+    else:
+        st.warning("Results CSV not found. Ensure file is in the root directory.")
 
 with tab2:
-    if df is not None:
-        st.markdown('<div class="section-label">Detailed Results</div>', unsafe_allow_html=True)
-        st.dataframe(df, use_container_width=True)
-        st.bar_chart(df.iloc[:, [0, 1]].set_index(df.columns[0]))
-    else:
-        st.error("Results file `AIC3D_v2_results.csv` not found.")
+    st.subheader("Chemical Descriptors")
+    # Pro Feature: Detailed breakdown of what the model "sees"
+    st.write("The model utilizes 2048-bit Morgan fingerprints alongside physicochemical properties:")
+    
+    c1, c2, c3 = st.columns(3)
+    c1.markdown("- **TPSA:** Polar Surface Area")
+    c2.markdown("- **LogP:** Hydrophobicity")
+    c3.markdown("- **MolWt:** Molecular Weight")
 
-with tab3:
-    st.markdown('<div class="section-label">Conclusion</div>', unsafe_allow_html=True)
-    st.success("""
-    AIC3D serves as a **methodological benchmark**. It proves that while ML can learn 
-    chemical patterns, "chemical intuition" requires more diverse training sets 
-    to generalize across novel drug scaffolds.
-    """)
+    # Image logic
+    if os.path.exists("project_pipeline.png"):
+        st.image("project_pipeline.png", caption="Analysis Pipeline", use_container_width=True)
