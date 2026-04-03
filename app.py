@@ -8,9 +8,6 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# -----------------------------------
-# Minimal styling only
-# -----------------------------------
 st.markdown("""
 <style>
 .block-container {
@@ -18,34 +15,88 @@ st.markdown("""
     padding-top: 2rem;
     padding-bottom: 3rem;
 }
-[data-testid="stMetricValue"] {
-    font-size: 1.15rem !important;
-    line-height: 1.2 !important;
+
+.hero {
+    padding: 0.25rem 0 1rem 0;
 }
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.2rem;
+}
+
+.hero-subtitle {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    opacity: 0.95;
+}
+
+.hero-text {
+    font-size: 1rem;
+    line-height: 1.8;
+    max-width: 980px;
+}
+
+.section-title {
+    font-size: 1.18rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+}
+
+.border-box {
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    border-radius: 16px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+}
+
+.border-box-subtle {
+    border: 1px solid rgba(148, 163, 184, 0.22);
+    border-radius: 16px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 1rem;
+}
+
+[data-testid="stMetric"] {
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    border-radius: 16px;
+    padding: 0.9rem 0.9rem 0.8rem 0.9rem;
+}
+
 [data-testid="stMetricLabel"] {
     font-size: 0.82rem !important;
+}
+
+[data-testid="stMetricValue"] {
+    font-size: 1.12rem !important;
+    line-height: 1.2 !important;
+    font-weight: 700 !important;
+}
+
+button[data-baseweb="tab"] {
+    font-weight: 600 !important;
+}
+
+hr {
+    margin-top: 1.25rem !important;
+    margin-bottom: 1.25rem !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# -----------------------------------
-# Helpers
-# -----------------------------------
+
 def load_csv():
     for fname in ["AIC3D_v2_results.csv", "aic3d_v2_results.csv"]:
         if os.path.exists(fname):
             return pd.read_csv(fname), fname
     return None, None
 
-def show_img(fname, caption=None):
-    if os.path.exists(fname):
-        st.image(fname, caption=caption, use_container_width=True)
 
 df, csv_path = load_csv()
 
-# -----------------------------------
-# Sidebar
-# -----------------------------------
 with st.sidebar:
     st.title("AIC3D")
     st.caption("Research dashboard")
@@ -56,7 +107,9 @@ with st.sidebar:
     st.markdown("[Email](mailto:pragyaagarwal004@gmail.com)")
 
     st.markdown("### Dashboard Utility")
-    st.write("This dashboard presents model context, validation results, figures, and downloadable outputs.")
+    st.write(
+        "This dashboard presents model context, validation results, figures, and downloadable outputs."
+    )
 
     if df is not None and csv_path is not None:
         with open(csv_path, "rb") as f:
@@ -65,26 +118,29 @@ with st.sidebar:
                 data=f,
                 file_name=os.path.basename(csv_path),
                 mime="text/csv",
-                use_container_width=True
+                use_container_width=True,
             )
 
-# -----------------------------------
-# Header
-# -----------------------------------
-st.title("AIC3D")
-st.subheader("AI-Catalyzed Drug Decay Detector")
-st.write(
-    "Environmental degradation prediction for pharmaceutical compounds using molecular descriptors and pH-dependent conditions."
+st.markdown('<div class="hero">', unsafe_allow_html=True)
+st.markdown('<div class="hero-title">AIC3D</div>', unsafe_allow_html=True)
+st.markdown(
+    '<div class="hero-subtitle">AI-Catalyzed Drug Decay Detector</div>',
+    unsafe_allow_html=True,
 )
-
-st.write(
-    "AIC3D is a machine learning project built to estimate drug degradation behavior before environmental release. "
-    "The system explores whether computational screening can provide earlier insight than traditional reactive testing alone."
+st.markdown(
+    """
+    <div class="hero-text">
+    Environmental degradation prediction for pharmaceutical compounds using molecular descriptors and
+    pH-dependent conditions.<br><br>
+    AIC3D is a machine learning project built to estimate drug degradation behavior before environmental release.
+    The system explores whether computational screening can provide earlier insight than traditional reactive
+    testing alone.
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
+st.markdown("</div>", unsafe_allow_html=True)
 
-# -----------------------------------
-# Top metrics
-# -----------------------------------
 m1, m2, m3, m4 = st.columns(4)
 with m1:
     st.metric("Model Type", "Random Forest")
@@ -105,118 +161,156 @@ with m7:
 
 st.divider()
 
-# -----------------------------------
-# Key finding
-# -----------------------------------
 st.markdown("## Key Finding")
-st.info(
-    "The model achieves strong internal performance but fails under Leave-One-Drug-Out validation. "
-    "This indicates limited generalization across unseen drugs and shows why evaluation design matters in scientific machine learning."
+st.markdown(
+    """
+    <div class="border-box">
+    The model achieves strong internal performance but fails under Leave-One-Drug-Out validation.
+    This indicates limited generalization across unseen drugs and shows why evaluation design matters
+    in scientific machine learning.
+    </div>
+    """,
+    unsafe_allow_html=True,
 )
 
-# -----------------------------------
-# Tabs
-# -----------------------------------
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
-    "Overview",
-    "Method",
-    "Results",
-    "Molecular Analysis",
-    "Figures",
-    "Conclusion"
-])
+tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
+    ["Overview", "Method", "Results", "Molecular Analysis", "Figures", "Conclusion"]
+)
 
-# -----------------------------------
-# Overview
-# -----------------------------------
 with tab1:
     c1, c2 = st.columns(2)
 
     with c1:
-        st.markdown("### Problem Context")
-        st.write(
-            "Pharmaceutical compounds can enter the environment through wastewater, disposal, and incomplete treatment. "
-            "Their persistence depends on molecular structure and environmental conditions such as pH."
-        )
-        st.write(
-            "AIC3D explores whether machine learning can estimate degradation-related behavior earlier than conventional testing workflows."
+        st.markdown('<div class="section-title">Problem Context</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            <div class="border-box">
+            Pharmaceutical compounds can enter the environment through wastewater, improper disposal,
+            and incomplete treatment. Their persistence depends on molecular structure and environmental
+            conditions such as pH.<br><br>
+            AIC3D explores whether machine learning can estimate degradation-related behavior earlier than
+            conventional testing workflows.
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
     with c2:
-        st.markdown("### Project Focus")
-        st.write("• Predict degradation-related behavior from structure and pH")
-        st.write("• Test whether the model generalizes to unseen drugs")
-        st.write("• Distinguish useful chemical signal from shortcut learning")
+        st.markdown('<div class="section-title">Project Focus</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            <div class="border-box">
+            • Predict degradation-related behavior from structure and pH<br>
+            • Test whether the model generalizes to unseen drugs<br>
+            • Distinguish useful chemical signal from shortcut learning
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-    st.markdown("### Research Positioning")
-    st.write(
-        "This dashboard is intended as a portfolio-grade research interface rather than a static summary page. "
-        "It combines project context, validation evidence, model interpretation, visual outputs, and downloadable results."
+    st.markdown('<div class="section-title">Research Positioning</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="border-box-subtle">
+        This dashboard is designed as a portfolio-grade research interface rather than a static summary page.
+        It combines project context, validation evidence, model interpretation, visual outputs, and downloadable results.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-# -----------------------------------
-# Method
-# -----------------------------------
 with tab2:
     c1, c2 = st.columns([1, 1])
 
     with c1:
-        st.markdown("### Feature Construction")
-        st.write("• 2048-bit Morgan fingerprints (radius = 2)")
-        st.write("• TPSA")
-        st.write("• logP")
-        st.write("• Molecular Weight")
-        st.write("• H-bond Donors")
-        st.write("• H-bond Acceptors")
-        st.write("• pH")
+        st.markdown('<div class="section-title">Methodology</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            <div class="border-box">
+            <b>Features</b><br>
+            • 2048-bit Morgan fingerprints (radius = 2)<br>
+            • TPSA<br>
+            • logP<br>
+            • Molecular Weight<br>
+            • H-bond Donors<br>
+            • H-bond Acceptors<br>
+            • pH<br><br>
 
-        st.markdown("### Model")
-        st.write("Random Forest Regressor")
+            <b>Model</b><br>
+            Random Forest Regressor<br><br>
 
-        st.markdown("### Validation Strategy")
-        st.write("• 80/20 train-test split")
-        st.write("• 5-fold cross-validation")
-        st.write("• Leave-One-Drug-Out validation")
+            <b>Validation Strategy</b><br>
+            • 80/20 train-test split<br>
+            • 5-fold cross-validation<br>
+            • Leave-One-Drug-Out validation
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
     with c2:
-        show_img("project_pipeline.png", "AIC3D pipeline")
-        if not os.path.exists("project_pipeline.png"):
-            st.caption("Add project_pipeline.png to the repo root to show the pipeline visual here.")
+        if os.path.exists("project_pipeline.png"):
+            st.image("project_pipeline.png", caption="AIC3D pipeline", use_container_width=True)
+        else:
+            st.markdown(
+                """
+                <div class="border-box-subtle">
+                Add <code>project_pipeline.png</code> to the repo root to display the pipeline visual here.
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-# -----------------------------------
-# Results
-# -----------------------------------
 with tab3:
-    st.markdown("### Validation Context")
-    st.warning(
-        "Internal metrics alone can overestimate real-world usefulness. "
-        "LODO is more rigorous because each held-out drug is completely unseen during training."
+    st.markdown('<div class="section-title">Validation Context</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="border-box">
+        Internal metrics alone can overestimate real-world usefulness.
+        LODO is more rigorous because each held-out drug is completely unseen during training.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    st.markdown("### Generalization Gap")
-    st.write(
-        "AIC3D performs well on internal evaluation but drops under drug-level holdout testing. "
-        "That gap is the most important scientific result in the project."
+    st.markdown('<div class="section-title">Generalization Gap</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="border-box-subtle">
+        AIC3D performs well on internal evaluation but drops under drug-level holdout testing.
+        That gap is the most important scientific result in the project.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
     c1, c2 = st.columns([0.95, 1.05])
 
     with c1:
-        st.markdown("### Feature Importance")
-        importance_df = pd.DataFrame({
-            "Feature": ["TPSA", "pH", "MolWt", "Other descriptors / fingerprints"],
-            "Importance": [0.1104, 0.0653, 0.0042, 0.8201]
-        }).sort_values("Importance")
+        st.markdown('<div class="section-title">Feature Importance</div>', unsafe_allow_html=True)
+        importance_df = pd.DataFrame(
+            {
+                "Feature": ["TPSA", "pH", "MolWt", "Other descriptors / fingerprints"],
+                "Importance": [0.1104, 0.0653, 0.0042, 0.8201],
+            }
+        ).sort_values("Importance")
         st.bar_chart(importance_df.set_index("Feature"))
 
     with c2:
-        st.markdown("### Interpretation")
-        st.write(
-            "The model appears especially sensitive to TPSA and pH. "
-            "This is partly chemically meaningful, but LODO suggests that these signals do not generalize reliably across unseen compounds."
+        st.markdown('<div class="section-title">Interpretation</div>', unsafe_allow_html=True)
+        st.markdown(
+            """
+            <div class="border-box">
+            The model appears especially sensitive to TPSA and pH.
+            This is partly chemically meaningful, but LODO suggests that these signals do not generalize
+            reliably across unseen compounds.
+            </div>
+            """,
+            unsafe_allow_html=True,
         )
 
-    st.markdown("### LODO Results")
+    st.markdown('<div class="section-title">LODO Results</div>', unsafe_allow_html=True)
+
     if df is not None:
         st.dataframe(df, use_container_width=True)
 
@@ -230,55 +324,59 @@ with tab3:
                 break
 
         if preferred_col:
-            st.markdown(f"### {preferred_col} by Held-Out Drug")
+            st.markdown(f"#### {preferred_col} by Held-Out Drug")
             chart_df = df[[first_col, preferred_col]].copy().set_index(first_col)
             st.bar_chart(chart_df)
         elif numeric_cols:
-            st.markdown("### Numeric Overview")
+            st.markdown("#### Numeric Overview")
             st.bar_chart(df.set_index(first_col)[numeric_cols])
     else:
-        st.error("AIC3D_v2_results.csv was not found in the repo root.")
+        st.markdown(
+            """
+            <div class="border-box-subtle">
+            <code>AIC3D_v2_results.csv</code> was not found in the repo root.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-# -----------------------------------
-# Molecular Analysis
-# -----------------------------------
 with tab4:
-    st.markdown("### Chemical Descriptor Breakdown")
-    st.write(
-        "This section makes the model more interpretable by breaking the 2055-dimensional feature space into understandable groups."
+    st.markdown('<div class="section-title">Chemical Descriptor Breakdown</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="border-box">
+        This section makes the model more interpretable by breaking the 2055-dimensional feature space
+        into understandable groups.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
 
-    descriptor_df = pd.DataFrame({
-        "Descriptor Group": [
-            "Morgan Fingerprints",
-            "TPSA",
-            "logP",
-            "Molecular Weight",
-            "H-bond Donors",
-            "H-bond Acceptors",
-            "pH"
-        ],
-        "Role in Model": [
-            "Encodes structural subpatterns across the molecule",
-            "Captures polar surface behavior",
-            "Represents hydrophobicity / partitioning tendency",
-            "Represents molecular size",
-            "Captures hydrogen-bond donation capacity",
-            "Captures hydrogen-bond acceptance capacity",
-            "Represents environmental condition affecting degradation"
-        ],
-        "Feature Count": [2048, 1, 1, 1, 1, 1, 1]
-    })
-
+    descriptor_df = pd.DataFrame(
+        {
+            "Descriptor Group": [
+                "Morgan Fingerprints",
+                "TPSA",
+                "logP",
+                "Molecular Weight",
+                "H-bond Donors",
+                "H-bond Acceptors",
+                "pH",
+            ],
+            "Role in Model": [
+                "Encodes structural subpatterns across the molecule",
+                "Captures polar surface behavior",
+                "Represents hydrophobicity / partitioning tendency",
+                "Represents molecular size",
+                "Captures hydrogen-bond donation capacity",
+                "Captures hydrogen-bond acceptance capacity",
+                "Represents environmental condition affecting degradation",
+            ],
+            "Feature Count": [2048, 1, 1, 1, 1, 1, 1],
+        }
+    )
     st.dataframe(descriptor_df, use_container_width=True, hide_index=True)
 
-    st.info(
-        "This descriptor view helps reduce the 'black box' effect by showing how structural fingerprints and classical chemical properties combine inside the model."
-    )
-
-# -----------------------------------
-# Figures
-# -----------------------------------
 with tab5:
     figure_list = [
         ("problem_context.png", "Project context"),
@@ -298,21 +396,28 @@ with tab5:
                     with col:
                         st.image(existing[i + j][0], caption=existing[i + j][1], use_container_width=True)
     else:
-        st.info("No figure files were found in the repo root.")
+        st.markdown(
+            """
+            <div class="border-box-subtle">
+            No figure files were found in the repo root.
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
 
-# -----------------------------------
-# Conclusion
-# -----------------------------------
 with tab6:
-    st.markdown("### Conclusion")
-    st.write(
-        "AIC3D demonstrates that molecular descriptors and environmental variables can capture degradation-related patterns. "
-        "However, Leave-One-Drug-Out evaluation shows that these patterns do not generalize reliably across unseen compounds."
-    )
-    st.write(
-        "The project’s strongest contribution is methodological honesty: strong internal metrics alone are not sufficient "
-        "to validate predictive systems in chemistry."
-    )
-    st.write(
-        "This positions AIC3D as a complete and transparent research prototype rather than an overclaimed predictive tool."
+    st.markdown('<div class="section-title">Conclusion</div>', unsafe_allow_html=True)
+    st.markdown(
+        """
+        <div class="border-box">
+        AIC3D demonstrates that molecular descriptors and environmental variables can capture degradation-related patterns.
+        However, Leave-One-Drug-Out evaluation shows that these patterns do not generalize reliably across unseen compounds.<br><br>
+
+        The project's strongest contribution is methodological honesty: strong internal metrics alone are not sufficient
+        to validate predictive systems in chemistry.<br><br>
+
+        This positions AIC3D as a complete and transparent research prototype rather than an overclaimed predictive tool.
+        </div>
+        """,
+        unsafe_allow_html=True,
     )
