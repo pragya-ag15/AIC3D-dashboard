@@ -1,0 +1,13 @@
+Experiment,Feature,Importance
+Experiment 1: Diverse drugs,pH,0.622647
+Experiment 1: Diverse drugs,LogP,0.115581
+Experiment 1: Diverse drugs,MW,0.103378
+Experiment 1: Diverse drugs,TPSA,0.088683
+Experiment 1: Diverse drugs,HBA,0.066999
+Experiment 1: Diverse drugs,HBD,0.002712
+Experiment 2: NSAIDs (similar class),MW,0.45899
+Experiment 2: NSAIDs (similar class),HBD,0.285239
+Experiment 2: NSAIDs (similar class),TPSA,0.115907
+Experiment 2: NSAIDs (similar class),pH,0.06766
+Experiment 2: NSAIDs (similar class),LogP,0.067236
+Experiment 2: NSAIDs (similar class),HBA,0.004968

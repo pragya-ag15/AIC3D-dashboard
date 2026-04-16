@@ -1,0 +1,3 @@
+Experiment,TrainTest_RF_R2,CV_RF_R2,LODO_RF_R2,Points,DominantSignal
+Experiment 1: Diverse drugs,0.7641,-21.232,-0.0677,9,pH
+Experiment 2: NSAIDs (similar class),0.9158,0.7157,0.2327,17,Structure

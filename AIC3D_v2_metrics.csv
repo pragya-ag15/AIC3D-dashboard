@@ -1,0 +1,5 @@
+Experiment,Model,TrainTest_MSE,TrainTest_R2,CV_MSE,CV_R2,LODO_MSE_Overall,LODO_MAE_Overall,LODO_R2_Overall
+Experiment 1: Diverse drugs,LinearRegression,2.7993,0.4864,15.3486,-48.119,10.0565,2.6873,-0.7472
+Experiment 1: Diverse drugs,RandomForest,1.2857,0.7641,7.0386,-21.232,6.1455,1.8463,-0.0677
+Experiment 2: NSAIDs (similar class),LinearRegression,0.1886,0.8861,0.5369,0.7479,0.5762,0.5944,0.7389
+Experiment 2: NSAIDs (similar class),RandomForest,0.1394,0.9158,0.6231,0.7157,1.6936,1.0,0.2327

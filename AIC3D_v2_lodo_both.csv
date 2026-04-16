@@ -1,0 +1,17 @@
+Experiment,Model,Drug,MSE,MAE,R2
+Experiment 1: Diverse drugs,LinearRegression,Amoxicillin,3.6854,1.3372,-3.1135
+Experiment 1: Diverse drugs,LinearRegression,Clarithromycin,19.7479,4.2314,-0.6313
+Experiment 1: Diverse drugs,LinearRegression,Trimethoprim,6.7362,2.4933,-11.3208
+Experiment 1: Diverse drugs,RandomForest,Amoxicillin,1.3179,0.8282,-0.4709
+Experiment 1: Diverse drugs,RandomForest,Clarithromycin,15.9342,3.7594,-0.3162
+Experiment 1: Diverse drugs,RandomForest,Trimethoprim,1.1844,0.9511,-1.1664
+Experiment 2: NSAIDs (similar class),LinearRegression,Aspirin,0.4261,0.6431,-37.2554
+Experiment 2: NSAIDs (similar class),LinearRegression,Diclofenac,0.3236,0.4946,-0.3102
+Experiment 2: NSAIDs (similar class),LinearRegression,Ibuprofen,0.2148,0.4069,-14.6489
+Experiment 2: NSAIDs (similar class),LinearRegression,Naproxen,0.1226,0.3262,-1.9776
+Experiment 2: NSAIDs (similar class),LinearRegression,Paracetamol,1.6285,1.0785,-2.5498
+Experiment 2: NSAIDs (similar class),RandomForest,Aspirin,0.5717,0.7521,-50.3268
+Experiment 2: NSAIDs (similar class),RandomForest,Diclofenac,0.3397,0.5384,-0.3752
+Experiment 2: NSAIDs (similar class),RandomForest,Ibuprofen,0.1058,0.2736,-6.7072
+Experiment 2: NSAIDs (similar class),RandomForest,Naproxen,0.9583,0.9013,-22.2688
+Experiment 2: NSAIDs (similar class),RandomForest,Paracetamol,5.5348,2.2292,-11.0646
